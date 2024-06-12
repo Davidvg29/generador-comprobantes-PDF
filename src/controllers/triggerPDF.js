@@ -41,7 +41,11 @@ const triggerPF = (req, res) => {
     .lineTo(545, 165)  // Punto final de la línea
     .stroke()
     
-    doc.text("1222", 70, 170, {align: 'left'})
+    doc.text("1", 50, 170, {width: 50, align: 'center'})
+    doc.text("Descripcion o nombre del producto", 100, 170, {width: 240, align: 'left'})
+    doc.text("10000,00", 350, 170, {width: 50, align: 'right'})
+    doc.text("10000,00", 450, 170, {width: 85, align: 'right'})
+    
 
     //finaliza el contenido del PDF
 
