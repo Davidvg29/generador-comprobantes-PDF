@@ -71,21 +71,23 @@ const triggerPF = (req, res) => {
     // let num = 100
     
     
-    for (let i = 0; i < products.length; i++) {
-        if ((i + 1) % 25 === 0){
-            doc.addPage()
-            content()
-            positionY = 180;
+    if (products) {
+        for (let i = 0; i < products.length; i++) {
+            if ((i + 1) % 25 === 0){
+                doc.addPage()
+                content()
+                positionY = 180;
+            }
+            doc.text(products[i].quantity, 50, positionY, {width: 50, align: 'center', backgroundColor: 'blue'})
+            doc.text(products[i].nameProduct, 100, positionY, {width: 240, align: 'left'})
+            doc.text(products[i].price, 350, positionY, {width: 50, align: 'right'})
+            doc.text(Number(products[i].quantity*products[i].price), 450, positionY, {width: 85, align: 'right'})
+            doc.moveTo(50, positionY+12)  // Punto de inicio de la línea
+            .lineTo(545, positionY+12)  // Punto final de la línea
+            .stroke()
+            positionY+=20;
+           total += products[i].quantity*products[i].price
         }
-        doc.text(products[i].quantity, 50, positionY, {width: 50, align: 'center', backgroundColor: 'blue'})
-        doc.text(products[i].nameProduct, 100, positionY, {width: 240, align: 'left'})
-        doc.text(products[i].price, 350, positionY, {width: 50, align: 'right'})
-        doc.text(Number(products[i].quantity*products[i].price), 450, positionY, {width: 85, align: 'right'})
-        doc.moveTo(50, positionY+12)  // Punto de inicio de la línea
-        .lineTo(545, positionY+12)  // Punto final de la línea
-        .stroke()
-        positionY+=20;
-       total += products[i].quantity*products[i].price
     }
     
     doc.fontSize(12);
