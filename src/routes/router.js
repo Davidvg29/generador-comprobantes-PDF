@@ -3,6 +3,6 @@ const router = Router()
 
 const triggerPDF = require("../controllers/triggerPDF.js")
 
-router.get("/", triggerPDF)
+router.post("/", triggerPDF)
 
 module.exports = router
