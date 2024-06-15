@@ -6,6 +6,7 @@ Este proyecto es un servidor que genera comprobantes en formato PDF para entrega
 
 - Node.js
 - npm (Node Package Manager)
+- Insomnia o Postman o alguna herramientas de peticiones http
 ## stack tecnologico
 
 **Server:** Node, Express, PDFkit
