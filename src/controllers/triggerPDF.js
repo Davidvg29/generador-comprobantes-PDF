@@ -1,5 +1,6 @@
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+const path = require('path');
 
 const triggerPDFValidations = require("../../src/validations/triggerPDFValidations")
 
@@ -104,7 +105,9 @@ const triggerPF = (req, res) => {
     doc.end()
 
     //guarda el PDF
-    // doc.pipe(fs.createWriteStream(`comprobante_${numRandom}.pdf`))
+    if (messages && messages.length===0) {
+        doc.pipe(fs.createWriteStream(path.join(__dirname, '../generated', `comprobante_${numberVoucher}.pdf`)))
+    }
 
     //response http con el PDF
     res.setHeader('Content-Type', 'application/pdf')

@@ -6,7 +6,7 @@ const triggerPDFValidations=(req)=>{
     let messages = [];
 
         if (Object.keys(req.body).length===0) {
-            messages.push("no se puede obtener un comprobante vacio")
+            messages.push("No se puede obtener un comprobante vacio")
        }
         if(nameCompany==="" || nameCompany===false || nameCompany===undefined){
             messages.push("Debes agregar nombre de la empresa")
@@ -23,11 +23,17 @@ const triggerPDFValidations=(req)=>{
         if(numberVoucher==="" || numberVoucher===false || numberVoucher===undefined){
             messages.push("Debes agregar numero de comprobante")
         }
+        if(isNaN(Number(numberVoucher))){
+            messages.push("Numero de comprobante solo puede ser numeros")
+        }
         if(numberOrder==="" || numberOrder===false || numberOrder===undefined){
             messages.push("Debes agregar numero de orden")
         }
+        if(isNaN(Number(numberOrder))){
+            messages.push("Numero de orden solo puede ser numeros")
+        }
         if(products===null || products===undefined || products.length===0){
-            messages.push("no se puede hacer un comprobante sin productos")
+            messages.push("No se puede hacer un comprobante sin productos")
         }
         
         if (products) {
