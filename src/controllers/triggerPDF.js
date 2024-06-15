@@ -1,13 +1,18 @@
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 
+const triggerPDFValidations = require("../../src/validations/triggerPDFValidations")
+
 const triggerPF = (req, res) => {
 
-    let {nameCompany, addressCompany, name, address, numberVoucher, date, numberOrder, products}=req.body;
-
-    // const numRandom = Math.floor(Math.random()*100)
+    let {nameCompany, addressCompany, nameClient, addressClient, numberVoucher, date, numberOrder, products}=req.body;
     
-    if (date=="" || date==null || date==false) {
+    let messages = triggerPDFValidations(req)
+    if(messages && messages.length>0){
+        res.status(400).json({messages})
+    }
+    
+    if (date==="" || date===null || date===false || date===undefined) {
         const year = new Date().getFullYear()
         const month = new Date().getMonth()+1
         const day = new Date().getDate()
@@ -16,9 +21,7 @@ const triggerPF = (req, res) => {
 
     }
 
-    if (Object.keys(req.body).length===0) {
-         res.status(400).json({message:"no se puede obtener un comprobante vacio"})
-    }
+    
 
     //crea el PDF
     const doc = new PDFDocument({size: 'A4', margin: 50});
@@ -34,8 +37,8 @@ const triggerPF = (req, res) => {
     doc.moveDown()
     
     doc.text("CLIENTE", 50, 100)
-    doc.text(name ? name.toUpperCase() : false, 50, 115)
-    doc.text(address ?  address.toUpperCase() : false, 50, 130)
+    doc.text(nameClient ? nameClient.toUpperCase() : false, 50, 115)
+    doc.text(addressClient ?  addressClient.toUpperCase() : false, 50, 130)
 
     doc.text("N° COMPROBANTE", 350, 100)
     doc.text(Number(numberVoucher), 450, 100, {align: 'right'})
@@ -67,9 +70,7 @@ const triggerPF = (req, res) => {
     let total = 0;
     // let num = 100
     
-    if(products===null || products===undefined || products.length===0){
-        res.status(400).json({message:"no se puede hacer un comprobante sin productos"})
-   }else{
+    
     for (let i = 0; i < products.length; i++) {
         if ((i + 1) % 25 === 0){
             doc.addPage()
@@ -86,7 +87,7 @@ const triggerPF = (req, res) => {
         positionY+=20;
        total += products[i].quantity*products[i].price
     }
-    }
+    
     doc.fontSize(12);
     doc.text("TOTAL", 350, positionY+30, {width: 50, align: 'right'})
     doc.text(`$ ${total}`, 450, positionY+30, {width: 85, align: 'right'})
@@ -106,7 +107,7 @@ const triggerPF = (req, res) => {
     //response http con el PDF
     res.setHeader('Content-Type', 'application/pdf')
     doc.pipe(res)
+}
 
-};
 
 module.exports = triggerPF;
